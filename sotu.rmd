@@ -5,8 +5,29 @@ date: "10/29/2018"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidytext)
 ```
+
+
+```{r, echo = FALSE}
+sou <- read_csv("data/sou.csv")
+presidents <- read_csv("data/presidents.csv")
+```
+
+```{r process, warning = FALSE, message = FALSE}
+tidy_sou <- sou %>%
+  left_join(presidents) %>%
+  unnest_tokens(word, text) %>%
+  inner_join(get_sentiments("afinn"), by = "word") %>%
+  #filter(year >= input$year) %>%
+  group_by(party, date) %>%
+  #summarize(rating = mean(score)) %>%
+  #arrange(desc(rating)) %>%
+  ggplot(aes(x = date, y = rating, color = party)) + geom_point()+ geom_smooth(method = "loess") + ggtitle("State of the Union Sentiment Scores") + xlab("Date") + ylab("Average Sentiment Score using AFINN Dictionary") 
+```
+
 
 
