@@ -13,11 +13,12 @@ library(tidytext)
 
 
 ```{r, echo = FALSE}
-sou <- read_csv("data/sou.csv")
-presidents <- read_csv("data/presidents.csv")
+
 ```
 
 ```{r process, warning = FALSE, message = FALSE}
+sou <- read_csv("../data/sou.csv")
+presidents <- read_csv(".../data/presidents.csv")
 tidy_sou <- sou %>%
   left_join(presidents) %>%
   unnest_tokens(word, text) %>%
